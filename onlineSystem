@@ -3,6 +3,8 @@
 #include <string.h>
 #include <time.h>
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #define MAX_MEMBERS 255 //회원의 최대 수
 #define MAX_ID_Num 255 //id 최대 수, 쵀대 입력 수
 #define MAX_PW_Num 255 //pw 최대 수, 최대 입력 수
