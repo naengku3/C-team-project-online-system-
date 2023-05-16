@@ -313,7 +313,6 @@ int GoodsFuntion(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEM
 						int foundCount = 0; // 일치하는 상품의 개수를 저장하는 변수
 
 						for (int i = 0; i < readCount; i++) {
-							printf("%d", strLength);
 							if (strncmp(enter, goodsArr[i].name, strLength) == 0) {
 								printf("\n\n상품번호[%d]\n\n", i + 1);
 								printf("상품명: %s\n가격: %d, 재고: %d\n", goodsArr[i].name, goodsArr[i].price, goodsArr[i].stock);
