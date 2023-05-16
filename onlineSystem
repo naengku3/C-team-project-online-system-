@@ -128,7 +128,7 @@ int GoodsFuntion(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEM
 						scanf("%s", adress);
 						strcpy(deliveryArr[orderNum].adress, adress);
 						printf("\n\n구매가 완료되었습니다.\n\n");
-						orderNum++; // 주문을 했으니 주문카운트 증가 ////////////////////////////////////////////////어딜봐도 버그났을거 같은거
+						orderNum++; // 주문을 했으니 주문카운트 증가
 					}
 					else {
 						printf("재고가 구매하실 수량보다 적습니다.\n\n");
@@ -221,13 +221,13 @@ int GoodsFuntion(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEM
 			else if (strcmp(console, "수정") == 0) {
 
 				printf("\n수정할 상품의 번호를 입력해 주세요:");
-				int modifyNum;
+				int modifyNum; //수정할 상품번호 지역변수로 임시생성
 				scanf("%d", &modifyNum);
 
 				if (modifyNum >= 1 && modifyNum <= goodsCount) { // 유효한 상품 번호인지 체크
 					printf("\n\n상품명: %s\n가격: %d, 재고: %d\n", goodsArr[modifyNum - 1].name, goodsArr[modifyNum - 1].price, goodsArr[modifyNum - 1].stock);
 					printf("\n상품명을 입력해 주세요 :");
-					getchar(); // 버퍼를 비워줌
+					getchar(); // 앞에 scanf로 받고있기 때문에 버퍼를 비워줌
 					fgets(goodsArr[modifyNum - 1].name, 100, stdin);
 					goodsArr[modifyNum - 1].name[strcspn(goodsArr[modifyNum - 1].name, "\n")] = '\0';
 					// fgets로 받고있기 때문에 뒤에 자동으로 붙는 \n울 제거!
@@ -253,7 +253,7 @@ int GoodsFuntion(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEM
 			else if (strcmp(console, "삭제") == 0) {
 
 				printf("\n삭제할 상품의 번호를 입력해 주세요:");
-				int delNum;
+				int delNum; //삭제할 상품번호 지역변수로 임시생성
 				scanf("%d", &delNum);
 				if (delNum >= 1 && delNum <= goodsCount) { // 유효한 상품 번호인지 체크
 					printf("\n\n상품명: %s\n가격: %d, 재고: %d\n", goodsArr[delNum - 1].name, goodsArr[delNum - 1].price, goodsArr[delNum - 1].stock);
@@ -268,7 +268,7 @@ int GoodsFuntion(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEM
 							goodsArr[i].price = goodsArr[i + 1].price;
 							goodsArr[i].stock = goodsArr[i + 1].stock;
 						}
-						goodsCount--;
+						goodsCount--; //물건의 총 수가 줄었기때문에 상품카운트 감소
 
 						fp = fopen("Goods.txt", "w");
 						for (int i = 0; i < goodsCount; i++) {
@@ -344,12 +344,12 @@ int GoodsFuntion(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEM
 
 
 int CustomerFunction(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEMBERS], Members MembersArr[MAX_PW_Num], Goods goodsArr[Max_Goods_Num], Timedata timeArr[MAX_MEMBERS], int idNumber, int memberIdCount, int orderNum) {
-	FILE* fpP;
+	FILE* fpP; //고객관리 기능 함수
 	FILE* fpS;
 
 	char console[50];
 
-	if (key == 1) {
+	if (key == 1) { // key == 1 (일반계정)
 		printf("\033[0m");  // 색상을 원래대로 되돌림
 		printf("\033[34m");  // 글자 색상을 파란색으로 설정
 		printf("\n%s", "++=======================================================++");
@@ -370,14 +370,14 @@ int CustomerFunction(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX
 
 			else if (strcmp(console, "수정") == 0) {
 
-				int modifyNum = idNumber;
+				int modifyNum = idNumber; //idNumber는 회원의 고유 번호아가 때문에 그걸 modifyNum에 대입
 				printf("%d", idNumber);
 				if (modifyNum >= 0 && modifyNum < MAX_MEMBERS) { // 유효한 고객인지 체크
 					puts("-------현재정보-------");
 					printf("\n\n아이디: %s\n", MembersArr[modifyNum].memberId);
 					printf("\n성명: %s\n전화번호: %s\n", customerArr[modifyNum].customerName, customerArr[modifyNum].phoneNumber);
 					printf("\n성명을 입력해 주세요 :");
-					getchar(); // 버퍼를 비워줌
+					getchar(); // 앞에 scanf로 받고있기 때문에 버퍼를 비워줌
 					fgets(customerArr[modifyNum].customerName, 100, stdin);
 					customerArr[modifyNum].customerName[strcspn(customerArr[modifyNum].customerName, "\n")] = '\0'; // fgets로 받고있기 때문에 뒤에 자동으로 붙는 \n울 제거!
 					printf("\n전화번호를 입력해 주세요 :");
@@ -422,7 +422,7 @@ int CustomerFunction(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX
 		}
 	}
 
-	if (key == 2) {
+	if (key == 2) { // key == 2 (관리자계정)
 		printf("\033[0m");  // 색상을 원래대로 되돌림
 		printf("\033[34m");  // 글자 색상을 파란색으로 설정
 		printf("\n%s", "++=======================================================++");
@@ -451,7 +451,7 @@ int CustomerFunction(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX
 					printf("\n\n고객 아이디: %s\n", MembersArr[modifyNum - 1].memberId);
 					printf("\n성명: %s\n전화번호: %s\n", customerArr[modifyNum - 1].customerName, customerArr[modifyNum - 1].phoneNumber);
 					printf("\n고객 성명을 입력해 주세요 :");
-					getchar(); // 버퍼를 비워줌
+					getchar(); // 앞에 scanf로 받고있기 때문에 버퍼를 비워줌
 					fgets(customerArr[modifyNum - 1].customerName, 100, stdin);
 					customerArr[modifyNum - 1].customerName[strcspn(customerArr[modifyNum - 1].customerName, "\n")] = '\0'; // fgets로 받고있기 때문에 뒤에 자동으로 붙는 \n울 제거!
 					printf("\n고객 전화번호를 입력해 주세요 :");
@@ -459,7 +459,7 @@ int CustomerFunction(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX
 					customerArr[modifyNum - 1].phoneNumber[strcspn(customerArr[modifyNum - 1].phoneNumber, "\n")] = '\0';
 					printf("수정이 완료되었습니다.\n");
 
-					// 수정된 상품 정보를 파일에 저장
+					// 수정된 고객 정보를 파일에 저장
 					fpS = fopen("Customer_Struct.txt", "w");
 					for (int i = 0; i < MAX_MEMBERS; i++) {
 						fprintf(fpS, "%s\n%s\n", customerArr[i].customerName, customerArr[i].phoneNumber);
@@ -540,7 +540,7 @@ int Order(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEMBERS], 
 	time_info = localtime(&current_time);
 	FILE* fpO;
 
-	if (key == 1) {
+	if (key == 1) { // key == 1 (일반계정)
 		printf("\033[0m");  // 색상을 원래대로 되돌림
 		printf("\033[35m");  // 글자 색상을 마젠타색으로 설정
 		printf("\n%s", "++=======================================================++");
@@ -564,15 +564,15 @@ int Order(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEMBERS], 
 			else if (strcmp(console, "수정") == 0) {
 
 				printf("\n수정할 주문 코드를 입력해 주세요:");
-				int modifyNum;
+				int modifyNum; //수정할 주문코드 값
 				scanf("%d", &modifyNum);
 
-				if (modifyNum >= 1 && modifyNum <= MAX_MEMBERS) { // 유효한 고객인지 체크
+				if (modifyNum >= 1 && modifyNum <= MAX_MEMBERS) { // 유효한 주문인지 체크
 					if (strcmp(deliveryArr[modifyNum - 1].id, MembersArr[idNumber].memberId) == 0) {
 						printf("\n\n고객 아이디: %s\n", deliveryArr[modifyNum - 1].id);
 						printf("\n성명: %s\t전화번호: %s\t주소: %s\n", deliveryArr[modifyNum - 1].name, deliveryArr[modifyNum - 1].phoneNumber, deliveryArr[modifyNum - 1].adress);
 						printf("\n받으실분 성명을 입력해 주세요 :");
-						getchar(); // 버퍼를 비워줌
+						getchar(); // 앞에 scanf로 받고있기 때문에 버퍼를 비워줌
 						fgets(deliveryArr[modifyNum - 1].name, 100, stdin);
 						deliveryArr[modifyNum - 1].name[strcspn(deliveryArr[modifyNum - 1].name, "\n")] = '\0'; // fgets로 받고있기 때문에 뒤에 자동으로 붙는 \n울 제거!
 						printf("\n받으실분 전화번호를 입력해 주세요 :");
@@ -584,7 +584,7 @@ int Order(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEMBERS], 
 						printf("수정이 완료되었습니다.\n");
 
 
-						// 시간 정보와 구매정보를 파일에 저장
+						// 주문에 관한 모든 정보를 파일에 저장
 						FILE* fpO;
 						fpO = fopen("Order.txt", "w");
 						for (int i = 0; i < orderNum; i++) {
@@ -604,7 +604,7 @@ int Order(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEMBERS], 
 			else if (strcmp(console, "삭제") == 0) {
 
 				printf("\n삭제할 주문 코드를 입력해 주세요:");
-				int delNum;
+				int delNum; //삭제할 주문코드 값
 				scanf("%d", &delNum);
 				if (delNum >= 1 && delNum <= MAX_MEMBERS) { // 유효한 고객인지 체크
 					if (strcmp(deliveryArr[delNum - 1].id, MembersArr[idNumber].memberId) == 0) {
@@ -615,8 +615,8 @@ int Order(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEMBERS], 
 						scanf("%s", confirm);
 
 						if (strcmp(confirm, "Y") == 0 || strcmp(confirm, "y") == 0) {
-							// 선택한 상품을 배열에서 삭제하고, 파일에 저장
-							for (int i = delNum - 1; i < MAX_MEMBERS - 1; i++) {    //선택한 상품번호 배열을 앞번호 배열로 대체하는 반복문
+							// 선택한 주문을 배열에서 삭제하고, 파일에 저장
+							for (int i = delNum - 1; i < MAX_MEMBERS - 1; i++) {    //선택한 주문번호 배열을 앞번호 배열로 대체하는 반복문
 								strcpy(timeArr[i].time, timeArr[i + 1].date);
 								strcpy(timeArr[i].time, timeArr[i + 1].time);
 								strcpy(deliveryArr[i].id, deliveryArr[i + 1].id);
@@ -624,8 +624,9 @@ int Order(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEMBERS], 
 								strcpy(deliveryArr[i].phoneNumber, deliveryArr[i + 1].phoneNumber);
 								strcpy(deliveryArr[i].adress, deliveryArr[i + 1].adress);
 							}
-							orderNum--;
+							orderNum--; //주문의 총 수가 줄었으니 카운트를 줄이기
 
+							// 주문에 관한 모든 정보를 파일에 저장
 							fpO = fopen("Order.txt", "w");
 							for (int i = 0; i < MAX_MEMBERS; i++) {
 								fprintf(fpO, "%d\n%s\n%s\n%d\n%d\n%s\n%s\n%s\n%s\n%s\n", orderNum, deliveryArr[i].id, deliveryArr[i].goodsName, deliveryArr[i].price, deliveryArr[i].buy, timeArr[i].date, timeArr[i].time, deliveryArr[i].name, deliveryArr[i].phoneNumber, deliveryArr[i].adress);
@@ -643,17 +644,17 @@ int Order(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEMBERS], 
 					printf("파일을 열지 못했습니다.\n");
 				}
 				else {
-					int readCount = 0;           // 목록이 아예 없을때의 경우도 나중에 추가하는게 좋을듯
-					while (!feof(fpO)) {
+					int readCount = 0; //잠깐 파일을 읽기위한 변수
+					while (!feof(fpO)) { //파일에 저장된 문자 더이상 읽을게 없을 때까지 읽기
 						fscanf(fpO, "%d %[^\n] %[^\n] %d %d %[^\n] %[^\n] %[^\n] %[^\n] %[^\n]\n", &orderNum, deliveryArr[readCount].id, deliveryArr[readCount].goodsName, &deliveryArr[readCount].price, &deliveryArr[readCount].buy, timeArr[readCount].date, timeArr[readCount].time, deliveryArr[readCount].name, deliveryArr[readCount].phoneNumber, deliveryArr[readCount].adress);
-						if (strcmp(deliveryArr[readCount].id, MembersArr[idNumber].memberId) == 0) {
+						if (strcmp(deliveryArr[readCount].id, MembersArr[idNumber].memberId) == 0) { //고객의 정보인지 아닌지 확인
 							printf("\n\n주문코드[%d]\n", readCount + 1);
 							printf("\n아이디: %s", deliveryArr[readCount].id);
 							printf("\n주문상품 : %s\t주문 수 : %d", deliveryArr[readCount].goodsName, deliveryArr[readCount].buy);
 						}
 						readCount++;
 					}
-					fclose(fpO);        //////////이 부분 챗 gpt가 두번 읽어오니까 수정하라험
+					fclose(fpO);  
 					puts("\n");
 				}
 			}
@@ -665,20 +666,20 @@ int Order(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEMBERS], 
 				}
 				else {
 					printf("\n상세내역을 확인할 주문 코드를 입력해 주세요:");
-					int detail;
+					int detail; //상세내역을 출력하기 위한 주문코드 지역변수
 					scanf("%d", &detail);
-					int readCount = 0;           // 목록이 아예 없을때의 경우도 나중에 추가하는게 좋을듯
+					int readCount = 0;           //잠깐 파일을 읽기위한 변수
 					while (!feof(fpO)) {
 						fscanf(fpO, "%d %[^\n] %[^\n] %d %d %[^\n] %[^\n] %[^\n] %[^\n] %[^\n]\n", &orderNum, deliveryArr[readCount].id, deliveryArr[readCount].goodsName, &deliveryArr[readCount].price, &deliveryArr[readCount].buy, timeArr[readCount].date, timeArr[readCount].time, deliveryArr[readCount].name, deliveryArr[readCount].phoneNumber, deliveryArr[readCount].adress);
 						readCount++;
 					}
-					if (strcmp(deliveryArr[detail - 1].id, MembersArr[idNumber].memberId) == 0) {
+					if (strcmp(deliveryArr[detail - 1].id, MembersArr[idNumber].memberId) == 0) { //고객의 정보인지 아닌지 확인
 						printf("\n\n주문코드[%d]\n", detail);
 						printf("\n구매날짜 : %s\t구매시각 : %s", timeArr[detail - 1].date, timeArr[detail - 1].time);
 						printf("\n아이디: %s", deliveryArr[detail - 1].id);
 						printf("\n주문상품 : %s\t주문 수 : %d\t가격 : %d", deliveryArr[detail - 1].goodsName, deliveryArr[detail - 1].buy, deliveryArr[detail - 1].price);
 						printf("\n성명 : %s\t전화번호 : %s\t주소 : %s", deliveryArr[detail - 1].name, deliveryArr[detail - 1].phoneNumber, deliveryArr[detail - 1].adress);
-						fclose(fpO);        //////////이 부분 챗 gpt가 두번 읽어오니까 수정하라험
+						fclose(fpO);        
 						puts("\n");
 					}
 
@@ -696,7 +697,7 @@ int Order(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEMBERS], 
 	}
 
 
-	if (key == 2) {
+	if (key == 2) { // key == 2 (관리자계정)
 		printf("\033[0m");  // 색상을 원래대로 되돌림
 		printf("\033[35m");  // 글자 색상을 마젠타색으로 설정
 		printf("\n%s", "++=======================================================++");
@@ -720,14 +721,14 @@ int Order(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEMBERS], 
 			else if (strcmp(console, "수정") == 0) {
 
 				printf("\n수정할 주문 코드를 입력해 주세요:");
-				int modifyNum;
+				int modifyNum; //수정할 상품번호 지역변수로 임시생성
 				scanf("%d", &modifyNum);
 
-				if (modifyNum >= 1 && modifyNum <= MAX_MEMBERS) { // 유효한 고객인지 체크
+				if (modifyNum >= 1 && modifyNum <= MAX_MEMBERS) { // 유효한 주문인지 체크
 					printf("\n\n고객 아이디: %s\n", deliveryArr[modifyNum - 1].id);
 					printf("\n성명: %s\t전화번호: %s\t주소: %s\n", deliveryArr[modifyNum - 1].name, deliveryArr[modifyNum - 1].phoneNumber, deliveryArr[modifyNum - 1].adress);
 					printf("\n받으실분 성명을 입력해 주세요 :");
-					getchar(); // 버퍼를 비워줌
+					getchar(); // 앞에 scanf로 받고있기 때문에 버퍼를 비워줌
 					fgets(deliveryArr[modifyNum - 1].name, 100, stdin);
 					deliveryArr[modifyNum - 1].name[strcspn(deliveryArr[modifyNum - 1].name, "\n")] = '\0'; // fgets로 받고있기 때문에 뒤에 자동으로 붙는 \n울 제거!
 					printf("\n받으실분 전화번호를 입력해 주세요 :");
@@ -739,7 +740,7 @@ int Order(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEMBERS], 
 					printf("수정이 완료되었습니다.\n");
 
 
-					// 시간 정보와 구매정보를 파일에 저장
+					// 주문에 관한 모든 정보를 파일에 저장
 					FILE* fpO;
 					fpO = fopen("Order.txt", "w");
 					for (int i = 0; i < orderNum; i++) {
@@ -755,7 +756,7 @@ int Order(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEMBERS], 
 			else if (strcmp(console, "삭제") == 0) {
 
 				printf("\n삭제할 주문 코드를 입력해 주세요:");
-				int delNum;
+				int delNum; //삭제할 주문코드 값
 				scanf("%d", &delNum);
 				if (delNum >= 1 && delNum <= MAX_MEMBERS) { // 유효한 고객인지 체크
 					printf("\n\n고객 아이디: %s\n", MembersArr[delNum - 1].memberId);
@@ -845,10 +846,10 @@ int Order(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEMBERS], 
 				}
 				else {
 					printf("\n상세내역을 확인할 주문 코드를 입력해 주세요:");
-					int detail;
+					int detail; //상세내역을 출력하기 위한 주문코드 지역변수
 					scanf("%d", &detail);
-					int readCount = 0;           // 목록이 아예 없을때의 경우도 나중에 추가하는게 좋을듯
-					while (!feof(fpO)) {
+					int readCount = 0; //잠깐 파일을 읽기위한 변수
+					while (!feof(fpO)) { //파일에 저장된 문자 더이상 읽을게 없을 때까지 읽기
 						fscanf(fpO, "%d %[^\n] %[^\n] %d %d %[^\n] %[^\n] %[^\n] %[^\n] %[^\n]\n", &orderNum, deliveryArr[readCount].id, deliveryArr[readCount].goodsName, &deliveryArr[readCount].price, &deliveryArr[readCount].buy, timeArr[readCount].date, timeArr[readCount].time, deliveryArr[readCount].name, deliveryArr[readCount].phoneNumber, deliveryArr[readCount].adress);
 						readCount++;
 					}
@@ -857,7 +858,7 @@ int Order(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEMBERS], 
 					printf("\n아이디: %s", deliveryArr[detail - 1].id);
 					printf("\n주문상품 : %s\t주문 수 : %d\t가격 : %d", deliveryArr[detail - 1].goodsName, deliveryArr[detail - 1].buy, deliveryArr[detail - 1].price);
 					printf("\n성명 : %s\t전화번호 : %s\t주소 : %s", deliveryArr[detail - 1].name, deliveryArr[detail - 1].phoneNumber, deliveryArr[detail - 1].adress);
-					fclose(fpO);        //////////이 부분 챗 gpt가 두번 읽어오니까 수정하라험
+					fclose(fpO);       
 					puts("\n");
 				}
 			}
@@ -873,13 +874,13 @@ int Order(Customer customerArr[MAX_MEMBERS], Delivery deliveryArr[MAX_MEMBERS], 
 
 
 
-int Fire(Customer customerArr[MAX_MEMBERS], int idNumber) {  /////// 함수로 안넘기니 프로그램이 강제종료 되어버리는 문제가 발생해서 아마 너무 많은 코드가 main에 있어서일까?
-	if (key == 1) {                                          /////// 일단 문제없이 작동하는데 성공함!
+int Starter(Customer customerArr[MAX_MEMBERS], int idNumber) {  //처음에 고객정보가 없는 고객은 등록하게하기 위한 함수
+	if (key == 1) {	// key == 1 (일반계정)                                          
 
 		FILE* fpS;
 		printf("\n로그인 완료!\n\n");
 
-		if (strcmp(customerArr[idNumber].customerName, "\0") == 0) {
+		if (strcmp(customerArr[idNumber].customerName, "\0") == 0) { //고객정보가 등록이 되어있는지 확인
 			puts("\n고객정보를 등록해야 합니다.\n");
 			printf("\n성명을 입력해 주세요 :");
 			getchar(); // 버퍼를 비워줌
@@ -903,21 +904,19 @@ int Fire(Customer customerArr[MAX_MEMBERS], int idNumber) {  /////// 함수로 �
 
 
 int main() {
-	char signInOrSignUp[50];
-	char id[50];
-	char pw[50];
+	char signInOrSignUp[50]; //로그인과 회원가입중에 어느걸 할건지 받을때 쓰는 문자열
+	char id[50]; //id 입력받는 문자열
+	char pw[50]; //pw 입력받는 문자열
 
-	int idNumber = 0;
-	char memberPwRe[MAX_PW_Num];
-	int idCount = 0;
-	int pwCount = 0;
+	int idNumber = 0; //개인 아이디 식별번호 일단 초기화
+	char memberPwRe[50]; //pw 재확인용
 	char console[50];
-	int wrongCount = 0;
+	int wrongCount = 0; //명령어 말고 다른걸 입력했을때 명령어를 사용할 수 있다는걸 다시 알려주기 위한 변수
 
 	time(&current_time); //시간 관련 함수
 	time_info = localtime(&current_time);
 
-	Admin* adminArr = (Admin*)malloc(MAX_MEMBERS * sizeof(Admin)); /////////////// 아마도 MAX_MEMBERS 1로 저장해도 될듯
+	Admin* adminArr = (Admin*)malloc(MAX_MEMBERS * sizeof(Admin)); //각 구조체 배열들 동적메모리로 관리
 	Members* MembersArr = (Members*)malloc(MAX_MEMBERS * sizeof(Members));
 	Goods* goodsArr = (Goods*)malloc(Max_Goods_Num * sizeof(Goods));
 	Customer* customerArr = (Customer*)malloc(MAX_MEMBERS * sizeof(Customer));
@@ -934,42 +933,42 @@ int main() {
 	fclose(fpA);
 
 	for (int i = 0; i < Max_Goods_Num; i++) {  //구조체 배열 초기화
-		strcpy(goodsArr[i].name, "\0");
+		strcpy(goodsArr[i].name, "\0"); //상품 관련 데이터 초기화
 		goodsArr[i].price = 0;
 		goodsArr[i].stock = 0;
 	}
 
 	for (int i = 0; i < MAX_MEMBERS; i++) {  //구조체 배열 초기화 
-		strcpy(MembersArr[i].memberId, "\0"); //로그인에서 써야해서 main함수에 선언함
+		strcpy(MembersArr[i].memberId, "\0"); //아이디 패스워드 관련 데이터 초기화
 		strcpy(MembersArr[i].memberPw, "\0");
 	}
 
 	for (int i = 0; i < MAX_MEMBERS; i++) {  //구조체 배열 초기화 
-		strcpy(customerArr[i].customerName, "\0");
+		strcpy(customerArr[i].customerName, "\0"); //고객 관련 데이터 초기화
 		strcpy(customerArr[i].phoneNumber, "\0");
 	}
 
 	for (int i = 0; i < Max_Goods_Num; i++) {  //구조체 배열 초기화 
-		strcpy(timeArr[i].date, "\0");      //고객 시간 관련 파일 초기화
+		strcpy(timeArr[i].date, "\0");      //주문 시간 관련 데이터 초기화
 		strcpy(timeArr[i].time, "\0");
 	}
 
 	for (int i = 0; i < MAX_MEMBERS; i++) {  //구조체 배열 초기화 
-		strcpy(deliveryArr[i].id, "\0");		//고객 시간 관련 파일 초기화
+		strcpy(deliveryArr[i].id, "\0");		//주문 정보 관련 데이터 초기화
 		strcpy(deliveryArr[i].name, "\0");
 		strcpy(deliveryArr[i].phoneNumber, "\0");
 		strcpy(deliveryArr[i].adress, "\0");
 	}
 
 
-	memberIdCount = 0;
+	memberIdCount = 0; //고객의 총 수
 	FILE* fpP; // 회원가입자 정보를 텍스트에 저장하기 위한 파일포인터선언
 	int readCount = 0; //memberIdCount를 ++해주기 위한 코드
 	fpP = fopen("Customer.txt", "a");
 	fclose(fpP);
 	fpP = fopen("Customer.txt", "r");
 	while (readCount < MAX_MEMBERS && fscanf(fpP, "%[^\n] %[^\n]\n", MembersArr[readCount].memberId, MembersArr[readCount].memberPw) == 2) {
-		readCount++;        /////// while의 fscanf를 통해 읽어들여서 값을 대치하지 않아도 상관없음.
+		readCount++;      
 		memberIdCount++;
 	}
 	fclose(fpP);
@@ -981,7 +980,7 @@ int main() {
 	fclose(fp);
 	fp = fopen("Goods.txt", "r");
 	while (readCount < Max_Goods_Num && fscanf(fp, "%[^\n] %d %d\n", goodsArr[readCount].name, &goodsArr[readCount].price, &goodsArr[readCount].stock) == 3) {
-		readCount++;        /////// while의 fscanf를 통해 읽어들여서 값을 대치하지 않아도 상관없음.
+		readCount++;    
 		goodsCount++;
 	}
 	fclose(fp);
@@ -1010,7 +1009,7 @@ int main() {
 	printf("\033[31m");  // 글자 색상을 빨간색으로 설정
 	printf("+-----------------------------------------------+\n");
 	printf("|         온라인 주문관리 시스템입니다.         |\n");
-	printf("+-----------------------------------------------+\n");  //로그인 회원가입을 함수로 만들어야 할 듯
+	printf("+-----------------------------------------------+\n"); 
 	printf("\033[0m");  // 색상을 원래대로 되돌림
 	printf("\n 로그인 또는 회원가입을 해주십시오.\n\n");
 	printf("(로그인 or 회원가입 입력)");
@@ -1019,7 +1018,7 @@ int main() {
 		scanf("%s", signInOrSignUp);
 
 
-		if (strcmp(signInOrSignUp, "로그인") == 0) {
+		if (strcmp(signInOrSignUp, "로그인") == 0) { //로그인
 
 
 			printf("아이디 :");
@@ -1029,38 +1028,37 @@ int main() {
 			scanf("%s", pw);
 
 			for (int i = 0; i < MAX_MEMBERS; i++) {
-				if (((!strcmp(MembersArr[i].memberId, id)) && (!strcmp(MembersArr[i].memberPw, pw))) == 1) { //////멤버 번호 전역변수로 설정해둘가
+				if (((!strcmp(MembersArr[i].memberId, id)) && (!strcmp(MembersArr[i].memberPw, pw))) == 1) { //파일정보에 일치하는 아이디와 비밀번호가 있는지 확인
 					idNumber = i;
-					key = 1;
+					key = 1; //일반계정 코드
 					break;
 					// 어느지점으로 가는지 확인 해야함
 				}
 			}
 
-			if (((!strcmp(adminArr[0].Id, id)) && (!strcmp(adminArr[0].Pw, pw))) == 1) {
+			if (((!strcmp(adminArr[0].Id, id)) && (!strcmp(adminArr[0].Pw, pw))) == 1) { //파일정보에 관리자 계정과 일치하는 아이디와 비밀번호가 있는지 확인
 				idNumber = 0;
-				key = 2;
+				key = 2; //관리자 계쩡 코드
 				break;
 			}
 			else {
 				if (key == 1) { break; }
 				else { key = 0; }
-				//key를 -1로 해서 분류하려 했으나 그러면 아마도 전역변수라 -1인 배열이 나와버리기 때문에 오류가 나는 듯.
 			}
 		}
 
 
 
 
-		if (strcmp(signInOrSignUp, "회원가입") == 0) {
+		if (strcmp(signInOrSignUp, "회원가입") == 0) { //회원가입
 			printf("아이디: ");
 			scanf("%s", id);
 
 			printf("비밀번호: ");
 			scanf("%s", pw);
 
-			printf("비밀번호 확인: ");
-			scanf("%s", memberPwRe);
+			printf("비밀번호 확인: "); //비밀번호 확인까지 받기
+			scanf("%s", memberPwRe); 
 
 			if (strcmp(pw, memberPwRe) == 0) {
 				strcpy(MembersArr[idNumber].memberId, id);
@@ -1082,8 +1080,8 @@ int main() {
 		}
 	}
 
-	if (key == 1) {
-		Fire(customerArr, idNumber);
+	if (key == 1) { // key == 1 (일반계정)
+		Starter(customerArr, idNumber);
 		printf("%d", idNumber);
 		printf("***온라인 주문관리 시스템 메인메뉴입니다.***\n('/명령어' 를 통해 사용할 수 있는 명령어를 확인 할 수 있습니다.)\n\n");
 		while (1) {
@@ -1132,7 +1130,7 @@ int main() {
 				//주문파트 함수
 			}
 			else if (strcmp(console, "종료") == 0) {
-				free(adminArr);
+				free(adminArr); //동적메모리 초기화
 				free(MembersArr);
 				free(goodsArr);
 				free(customerArr);
@@ -1152,7 +1150,7 @@ int main() {
 		}
 	}
 
-	if (key == 2) {
+	if (key == 2) { // key == 2 (관리자계정)
 		printf("***온라인 주문관리 시스템 메인메뉴입니다.***\n('/명령어' 를 통해 사용할 수 있는 명령어를 확인 할 수 있습니다.)\n\n");
 		while (1) {
 			printf("console :");
@@ -1200,7 +1198,7 @@ int main() {
 				//주문파트 함수
 			}
 			else if (strcmp(console, "종료") == 0) {
-				free(adminArr);
+				free(adminArr); //동적메모리 초기화
 				free(MembersArr);
 				free(goodsArr);
 				free(customerArr);
@@ -1219,8 +1217,4 @@ int main() {
 			}
 		}
 	}
-	// /명령어 입력 {
-		// /상품 상품관리에 대한 메뉴 보기, 일반 상품관리를 입력하면 상품관리에 대한 종합 메뉴로 넘어가서 추가를 할건지 수정을 할건지 삭제를 할건지 물어보기.
-		// /상품추가, /상품수정, /상품삭제에 관한 내용설명 + 일반 상품추가, 상품수정, 상품삭제를 입력하면 그 기능에 맞는 함수로 넘어가기.
-
 }
